@@ -2,7 +2,7 @@
 $connection = mysqli_connect(
     'localhost',
     'root',
-    '123',
+    'your sql password',
     'ELITE_CODERS'
 );
 
