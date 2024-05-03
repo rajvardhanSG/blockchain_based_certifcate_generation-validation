@@ -8,7 +8,7 @@
         $connection = mysqli_connect(
             'localhost',
             'root',
-            '123',
+            'your SQL password',
             'ELITE_CODERS'
         );
 
