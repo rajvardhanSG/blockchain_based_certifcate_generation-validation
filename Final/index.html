@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMART CONTRACT TEST</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>EliteCoders</h1>
+
+        <div class="section">
+            <button onclick="connectMetamask()">CONNECT TO METAMASK</button>
+            <p id="accountArea">Connection Status: NOT CONNECTED to Metamask</p>
+        </div>
+
+        <div class="section">
+            <button onclick="connectContract()">CONNECT TO CONTRACT</button>
+            <p id="contractArea">Connection Status: NOT CONNECTED to Smart Contract</p>
+        </div>
+
+        <div class="section">
+            <h1>Certificate Information Entry</h1>
+            <form>
+                <label for="institutionName">Institution Name:</label>
+                <input type="text" id="institutionName" placeholder="Enter Institution Name" required>
+
+                <label for="studentName">Student Name:</label>
+                <input type="text" id="studentName" placeholder="Enter Student Name" required>
+
+                <label for="grades">Grades:</label>
+                <input type="text" id="grades" placeholder="Enter Grades" required>
+
+                <label for="courseName">Course Name:</label>
+                <input type="text" id="courseName"  placeholder="Enter Course Name" required>
+            </form>
+            <button  onclick="changeWord()">ADD CERTIFICATE</button>
+        </div>
+
+        <div class="section">
+            <button onclick="readWord()">GET CERTIFICATE NO.</button>
+            <p id="dataArea">Data Status: NO Data from Smart Contract</p>
+        </div>
+
+        <div class="section">
+            
+            <form>
+                <label for="certi_no">Certificate Number:</label>
+                <input type="number" id="certi_no"  placeholder="Enter Certificate Number" required>
+            </form>
+            <button onclick="searchWord()">SEARCH CERTIFICATE NO.</button>
+            <p id="Certi_data">Data Status: NO Data from Smart Contract</p>
+        </div>
+    </div>
+
+    <script>
+        let account;
+        const connectMetamask = async () => {
+            if(window.ethereum !== "undefined"){
+                const accounts = await ethereum.request({method: "eth_requestAccounts"});
+                account = accounts[0];
+                document.getElementById("accountArea").innerHTML = `Account is: ${account}`;
+            }
+
+        }
+
+        const connectContract = async () => {
+            const ABI = [
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "institutionName",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "studentName",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "grades",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "courseName",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "CertificateAdded",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "iname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "sname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "sgrades",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "scourse",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "CreateCertificate",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "certificates",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "index",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "instiname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stuname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stugrades",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stucourse",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "Getcerti",
+                    "outputs": [
+                        {
+                            "components": [
+                                {
+                                    "internalType": "uint256",
+                                    "name": "index",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "internalType": "uint256",
+                                    "name": "id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "instiname",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stuname",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stugrades",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stucourse",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "uint256",
+                                    "name": "timestamp",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "internalType": "struct StoreCertificate.Certificate",
+                            "name": "",
+                            "type": "tuple"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "getcerti_idno",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "owner",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            const Address = "0x0db6B7431e525D835B64474A14ae4DeBeC6C7f4B";
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract(ABI, Address);
+            document.getElementById("contractArea").innerHTML = "Connection Status: Success";
+        }
+
+        const readWord = async () => {
+            const data = await window.contract.methods.getcerti_idno().call();
+            document.getElementById("dataArea").innerHTML = `Certificate no. and id : ${data}`;
+        }
+
+        const changeWord = async () => {
+            // const myEntry = document.getElementById("inputArea").value;
+            const institutionName = document.getElementById("institutionName").value;
+            const studentName = document.getElementById("studentName").value;
+            const grades = document.getElementById("grades").value;
+            const courseName = document.getElementById("courseName").value;
+
+            await window.contract.methods.CreateCertificate(institutionName, studentName, grades, courseName).send({ from: account });
+            
+        }
+
+        const searchWord = async () => {
+            const certi_no = document.getElementById("certi_no").value;
+            const [certino, certiid, iname, sname, sgrade, scourse, time] = await window.contract.methods.Getcerti(account, certi_no).call();
+            document.getElementById("Certi_data").innerHTML = `Certificate : ${[certino, certiid, iname, sname, sgrade, scourse, time]}`;
+        }
+       
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD COURSE</title>
+    <!-- <link rel="stylesheet" href="temp.css"> -->
+     <link rel="stylesheet" href="addCourse.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <form action="http://localhost/Final/backend/addCourse.php" method="post" enctype="multipart/form-data">
+            <h1>Add Course</h1>
+
+            <div class="form-group">
+                <label for="Course">Enter the Course:</label>
+                <input type="text" id="course" name="course" placeholder="Enter the course " required>
+            </div>
+
+            <div class="form-group">
+                <label for="templates">Enter your template:</label>
+                <input type="file" id="templates" name="template" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Font">Enter your Font Style:</label>
+                <input type="file" id="font" name="font" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Coordinate">Enter your Coordinate:</label>
+                <input type="file" id="coordinate" name="coordinates" required>
+            </div>
+            
+            <input type="submit" value="Add Course" name="submit">
+        </form>
+    </div>
+</body>
+</html>  

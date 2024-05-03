@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMART CONTRACT TEST</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <link rel="stylesheet" href="index2.css">
+</head>
+<body>
+
+    <div id="container">
+        <h1>Verify Certificate</h1>
+
+        <a href="http://localhost/Final/frontend/mainpage/index.html">Home</a><br>
+
+        <button onclick="connectMetamask()">CONNECT TO METAMASK</button>
+        <p id="accountArea">Connection Status: NOT CONNECTED to Metamask </p>
+
+        <button onclick="connectContract()">CONNECT TO CONTRACT</button> 
+        <p id="contractArea">Connection Status: NOT CONNECTED to Smart Contract</p>
+
+        
+        <div>
+            <h1>Search </h1>
+            <label for="InstituteList">Select Institute</label>
+            <select name="insti_select" id="insti_select" required>
+                <option value=0x40AA0B8070Cf69FAf40Ba3f0373098159683cF55>KIT</option>
+                <option value=0x42E4fDD1D3B61289Df82c9c0708B362E84a5f5c6>VIT</option>
+            </select><br>
+            
+            <label for="Certificate number">Certificate Number:</label>
+            <input type="number" id="certi_no" required>
+            <button onclick="searchWord()">SEARCH CERTIFICATE NO.</button> <br>
+            <p id="Certi_data">Data Status: NO Data from Smart Contract </p>
+        </div>
+        
+    </div>
+
+    <script type = "text/JavaScript">
+        let account;
+        const connectMetamask = async () => {
+            if(window.ethereum !== "undefined"){
+                const accounts = await ethereum.request({method: "eth_requestAccounts"});
+                account = accounts[0];
+                document.getElementById("accountArea").innerHTML = `Account is: ${account}`;
+            }
+
+        }
+
+        const connectContract = async () => {
+            const ABI = [
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "institutionName",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "studentName",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "grades",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "courseName",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "CertificateAdded",
+                    "type": "event"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "iname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "sname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "sgrades",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "scourse",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "CreateCertificate",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "certificates",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "index",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "instiname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stuname",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stugrades",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "stucourse",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "user",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "Getcerti",
+                    "outputs": [
+                        {
+                            "components": [
+                                {
+                                    "internalType": "uint256",
+                                    "name": "index",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "internalType": "uint256",
+                                    "name": "id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "instiname",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stuname",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stugrades",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "string",
+                                    "name": "stucourse",
+                                    "type": "string"
+                                },
+                                {
+                                    "internalType": "uint256",
+                                    "name": "timestamp",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "internalType": "struct StoreCertificate.Certificate",
+                            "name": "",
+                            "type": "tuple"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "getcerti_idno",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "owner",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            const Address = "0x0db6B7431e525D835B64474A14ae4DeBeC6C7f4B";
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract(ABI, Address);
+            document.getElementById("contractArea").innerHTML = "Connection Status: Success";
+        }
+
+        const searchWord = async () => {
+            const insti_address = document.getElementById("insti_select").value;
+            const certi_no = document.getElementById("certi_no").value;
+            const [certino, certiid, iname, sname, sgrade, scourse, time] = await window.contract.methods.Getcerti(insti_address, certi_no).call();
+            document.getElementById("Certi_data").innerHTML = `Certificate : ${[certino, certiid, iname, sname, sgrade, scourse, time]}`;
+        }
+
+    </script>
+</body>
+</html>
