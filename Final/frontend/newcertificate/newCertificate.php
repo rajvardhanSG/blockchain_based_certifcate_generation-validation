@@ -27,7 +27,7 @@
                         $connection = mysqli_connect(
                             'localhost',
                             'root',
-                            '123',
+                            'your SQL password',
                             'ELITE_CODERS'
                         );
                         $q = "SELECT COURSE_NAME FROM ELITE_CODERS.COURSES WHERE ISSUER_ID = 1001";
@@ -287,7 +287,7 @@
                     "type": "function"
                 }
             ];
-            const Address = "0x0db6B7431e525D835B64474A14ae4DeBeC6C7f4B";
+            const Address = ""; // use your own block-chain network address connected through metamask
             window.web3 = await new Web3(window.ethereum);
             window.contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connection Status: Success";
