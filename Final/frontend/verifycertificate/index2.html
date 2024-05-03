@@ -23,8 +23,9 @@
             <h1>Search </h1>
             <label for="InstituteList">Select Institute</label>
             <select name="insti_select" id="insti_select" required>
-                <option value=0x40AA0B8070Cf69FAf40Ba3f0373098159683cF55>KIT</option>
-                <option value=0x42E4fDD1D3B61289Df82c9c0708B362E84a5f5c6>VIT</option>
+                <option value= >KIT</option>
+                // value= certificate generators metamask wallet connect block-chain network address
+                <option value= >VIT</option>
             </select><br>
             
             <label for="Certificate number">Certificate Number:</label>
@@ -260,7 +261,7 @@
                     "type": "function"
                 }
             ];
-            const Address = "0x0db6B7431e525D835B64474A14ae4DeBeC6C7f4B";
+            const Address = ""; //your block-chain deployment address
             window.web3 = await new Web3(window.ethereum);
             window.contract = await new window.web3.eth.Contract(ABI, Address);
             document.getElementById("contractArea").innerHTML = "Connection Status: Success";
