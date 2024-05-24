@@ -1,5 +1,5 @@
 
-# Online Block-chain based Certificate Generation & Validation
+# Blockchain based Certificate Generation and Validation
 
 Project aim to create a decentralized system where custom digital certificates 
 are generated and can be validated using 
